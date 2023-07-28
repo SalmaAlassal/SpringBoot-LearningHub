@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome Page</title>
+</head>
+<body>
+<!--    The dynamic part of the content is represented by the Thymeleaf attribute th:text.-->
+<!--    th:text="${session.name}": This attribute is used to set the text content of the <span> element to the value of the name attribute stored in the session object.-->
+<h1>Welcome, <span th:text="${session.attributeName}"></span>!</h1>
+<h1><span th:text="${attributeName}"></span></h1> <!-- This is for method4 -->
+
+</body>
+</html>
+
+<!-- Use this URL to test the application:  http://localhost:8080/?name=salma -->

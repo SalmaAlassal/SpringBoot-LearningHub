@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Page</title>
+</head>
+<body>
+<!--    The dynamic part of the content is represented by the Thymeleaf attribute th:text.-->
+    <h1><span th:text="'ID : ' + ${obj.id} + ' - Name : ' + ${obj.name}"></span></h1>
+
+</body>
+</html>
+
+<!-- Use this URL to test the application:  http://localhost:8080/?name=salma&id=1 -->
