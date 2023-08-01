@@ -29,3 +29,12 @@ This example focuses on allowing users to get and add new students through a for
 This example is an extension of the previous one, building upon the usage of `CrudRepository` to perform CRUD operations on the database. It introduces custom query methods that follow a specific naming convention, enabling us to define personalized search criteria without the need for writing explicit SQL queries. In addition, this example employs JPQL Query for more advanced querying capabilities.
 
 Using these custom query methods, we retrieve data from the database and present it on a web page. The application demonstrates how to display information of a particular student based on a specific attribute, such as their used technology.
+
+
+## Example 6 : [Student Form Web App With Content Negotiation](StudentFormWebAppWithContentNegotiation)
+
+This example is an extension of the previous one with the addition of content negotiation which is the process of determining the response format for a given request.
+
+> Content negotiation is the process of determining the response format for a given request. It is used to serve different representations of a resource at the same URI, so that the user agent can specify which representation is best suited for the user. For example, a web browser may prefer to receive a resource in HTML format, while an API client may prefer JSON format.
+
+> Postman was used to test the API endpoints.
