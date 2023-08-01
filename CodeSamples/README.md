@@ -44,3 +44,7 @@ This example is an extension of the previous one with the addition of content ne
 This example builds upon the previous one, introducing the usage of the `@RestController` annotation to create a RESTful web service. It showcases how to utilize the `@RequestBody` annotation to extract data from the request body and convert it into a Java object, along with accepting only JSON or XML data as input. 
 
 Furthermore, we demonstrate how to perform various HTTP requests, including GET, POST, PUT, and DELETE, using the popular tool Postman. 
+
+## Example 8 : [RESTfulWebDemoWithJPA](RESTfulWebDemoWithJPA)
+
+This example demonstrates how to use Spring Boot Data REST to create a RESTful web service, which automatically exposes your JPA repositories as RESTful endpoints. It simplifies the process of creating RESTful APIs by eliminating the need to write boilerplate code for basic CRUD (Create, Read, Update, Delete) operations on your data entities. You don't need to write any controller classes or methods to handle HTTP requests as the previous example.
