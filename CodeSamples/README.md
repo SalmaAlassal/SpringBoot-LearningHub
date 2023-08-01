@@ -38,3 +38,9 @@ This example is an extension of the previous one with the addition of content ne
 > Content negotiation is the process of determining the response format for a given request. It is used to serve different representations of a resource at the same URI, so that the user agent can specify which representation is best suited for the user. For example, a web browser may prefer to receive a resource in HTML format, while an API client may prefer JSON format.
 
 > Postman was used to test the API endpoints.
+
+## Example 7 : [RESTful Web Demo](RESTfulWebDemo)
+
+This example builds upon the previous one, introducing the usage of the `@RestController` annotation to create a RESTful web service. It showcases how to utilize the `@RequestBody` annotation to extract data from the request body and convert it into a Java object, along with accepting only JSON or XML data as input. 
+
+Furthermore, we demonstrate how to perform various HTTP requests, including GET, POST, PUT, and DELETE, using the popular tool Postman. 
