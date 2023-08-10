@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book Store</title>
+  <link rel="stylesheet" href="path-to-your-css-file.css">
+  <script src="https://kit.fontawesome.com/0faddc1af8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav style="background-color: #343a40; color: #ffffff;">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+    <a href="#" style="text-decoration: none; color: #ffffff; font-weight: bold;">Book Store</a>
+    <button id="navToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">&#9776;</span>
+    </button>
+  </div>
+  <ul id="navbarSupportedContent" style="list-style: none; padding-left: 0; display: none;">
+    <li><a href="/" style="text-decoration: none; color: #ffffff;">Home</a></li>
+    <li><a href="available_books" style="text-decoration: none; color: #ffffff;">Available Books</a></li>
+    <li><a href="my_books" style="text-decoration: none; color: #ffffff;">My Books</a></li>
+  </ul>
+  <div style="padding: 10px;">
+    <a href="book_register" style="text-decoration: none; color: #ffffff;">New Book Register</a>
+  </div>
+</nav>
+
+<div style="margin: 20px auto; max-width: 800px; border: 1px solid black; padding: 50px;">
+  <h4 style="text-align: center;">Edit Book Here</h4>
+  <form style="width: 50%; margin: 0 auto;" th:action="@{/save-book}" method="post" th:object="${book}">
+    <input type="hidden" name="id" th:value="${book.id}">
+    <div style="margin-bottom: 20px;">
+      <label for="name">Name</label>
+      <input type="text" name="name" th:value="${book.name}" style="width: 100%;">
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label for="author">Author</label>
+      <input type="text" name="author" th:value="${book.author}" style="width: 100%;">
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label for="price">Price</label>
+      <input type="text" name="price" th:value="${book.price}" style="width: 100%;">
+    </div>
+    <div style="text-align: center;">
+      <button type="submit" style="background-color: #007bff; color: #ffffff; border: none; padding: 8px 20px; cursor: pointer;">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function () {
+    const navMenu = document.getElementById('navbarSupportedContent');
+    const expanded = navMenu.getAttribute('aria-expanded');
+    navMenu.style.display = expanded === 'false' ? 'block' : 'none';
+    navMenu.setAttribute('aria-expanded', expanded === 'false' ? 'true' : 'false');
+  });
+</script>
+
+</body>
+</html>

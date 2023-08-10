@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book Store</title>
+  <style>
+    /* Add your custom CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #343a40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+    }
+
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .container {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .container h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .container h6 {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .container img {
+      width: 360px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a class="navbar-brand text-white" href="/">Book Store</a>
+  <div class="navbar-links">
+    <a class="nav-link text-white" href="/">Home</a>
+    <a class="nav-link text-white" href="available-books">Available Books</a>
+    <a class="nav-link text-white" href="my-books">My Books</a>
+    <a class="nav-link text-white" href="register-book">New Book Register</a>
+  </div>
+</div>
+
+<div style="max-width: 1200px; margin: 50px auto; padding: 20px; border: 1px solid black;">
+  <h4 style="text-align: center;">New Book Register</h4>
+  <form style="margin: 0 auto; width: 50%;" action="/save-book" method="post">
+    <div style="margin-bottom: 20px;">
+      <label for="name" style="display: block; margin-bottom: 5px;">Name</label>
+      <input type="text" style="width: 100%; padding: 5px;" name="name">
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label for="author" style="display: block; margin-bottom: 5px;">Author</label>
+      <input type="text" style="width: 100%; padding: 5px;" name="author">
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label for="price" style="display: block; margin-bottom: 5px;">Price</label>
+      <input type="text" style="width: 100%; padding: 5px;" name="price">
+    </div>
+    <div style="text-align: center;">
+      <button type="submit" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer;">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('menuToggle').addEventListener('click', function() {
+    var menu = document.getElementById('navbarSupportedContent');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  });
+</script>
+
+</body>
+</html>

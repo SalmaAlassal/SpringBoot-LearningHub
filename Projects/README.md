@@ -18,6 +18,18 @@ This app manages students and uses an in-memory H2 database. It also has a basic
 
 - Spring Web
 - Spring Data JPA
-- H2 Database SQL
+- H2 Database
 - Lombok 
 - Thymeleaf 
+
+### Project 3: [Book Store Management System](BookStoreManagementSystem)
+
+This app manages books and uses an in-memory H2 database. It also has a basic UI created with Thymeleaf for easy interaction. Clients can register a new book, view all available books, delete a book, update a book's details and move a book to my books section.
+
+#### Dependencies
+
+- Spring Web
+- Spring Data JPA
+- H2 Database
+- Thymeleaf
+- Spring Boot DevTools 
