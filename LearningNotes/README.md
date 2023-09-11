@@ -16,7 +16,7 @@ Here, you will find a detailed notes covering essential Spring Boot concepts and
     - [JpaRepository vs CrudRepository](SpringBoot_GeneralNotes.md#jparepository-vs-crudrepository)
 
 
-- [HTTP Methods and Status Codes](HTTP-Methods-and-Status-Codes.md)
+- [HTTP-Basics](HTTP-Basics.md)
 
 ## Topics to be Covered
 
