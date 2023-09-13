@@ -51,4 +51,4 @@ This example demonstrates how to use Spring Boot Data REST to create a RESTful w
 
 ## Example 9 : [Phone Number Validation](PhoneNumberValidation)
 
-In this example, we showcase the usage of an external API for phone number validation. It uses the [NumVerify API](https://numverify.com/) to validate phone numbers. The API is free to use. It returns a JSON response containing information about the phone number, including the country, location, carrier, and line type.
+This example demonstrates how to utilize the `RestTemplate` class for making HTTP requests to the API and converting the response into a Java object. It leverages the [NumVerify API](https://numverify.com/) to validate phone numbers. The API is available for free and provides a JSON response that includes details about the phone number, such as the country, location, carrier, and line type.
