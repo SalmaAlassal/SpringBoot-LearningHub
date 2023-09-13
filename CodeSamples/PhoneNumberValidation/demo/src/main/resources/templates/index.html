@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Phone Number Validation</title>
+</head>
+<body>
+<h1>Phone Number Validation</h1>
+<form th:action="@{/validate}" method="get">
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" required>
+    <br>
+    <label for="countryCode">Country Code:</label>
+    <input type="text" id="countryCode" name="countryCode" required>
+    <br>
+    <button type="submit">Validate</button>
+</form>
+</body>
+</html>

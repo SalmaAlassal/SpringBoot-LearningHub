@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Validation Result</title>
+    <link th:href="@{/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Validation Result</h1>
+
+    <p th:if="${phoneNumberInfo.valid}">
+            Phone number <span th:text="${phoneNumberInfo.number}"></span> is valid.
+    </p>
+
+    <p th:if="${phoneNumberInfo.valid}">
+        Local Format: <span th:text="${phoneNumberInfo.local_format}"></span><br>
+        International Format: <span th:text="${phoneNumberInfo.international_format}"></span><br>
+        Country Prefix: <span th:text="${phoneNumberInfo.country_prefix}"></span><br>
+        Country Code: <span th:text="${phoneNumberInfo.country_code}"></span><br>
+        Country Name: <span th:text="${phoneNumberInfo.country_name}"></span><br>
+        Carrier: <span th:text="${phoneNumberInfo.carrier}"></span><br>
+        Line Type: <span th:text="${phoneNumberInfo.line_type}"></span><br>
+    </p>
+
+    <p th:unless="${phoneNumberInfo.valid}">
+        Phone number <span th:text="${phoneNumberInfo.number}"></span> is not valid.
+    </p>
+
+    <a th:href="@{/}">Back to Input Form</a>
+
+</div>
+</body>
+</html>

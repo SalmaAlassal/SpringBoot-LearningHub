@@ -48,3 +48,7 @@ Furthermore, we demonstrate how to perform various HTTP requests, including GET,
 ## Example 8 : [RESTfulWebDemoWithJPA](RESTfulWebDemoWithJPA)
 
 This example demonstrates how to use Spring Boot Data REST to create a RESTful web service, which automatically exposes your JPA repositories as RESTful endpoints. It simplifies the process of creating RESTful APIs by eliminating the need to write boilerplate code for basic CRUD (Create, Read, Update, Delete) operations on your data entities. You don't need to write any controller classes or methods to handle HTTP requests as the previous example.
+
+## Example 9 : [Phone Number Validation](PhoneNumberValidation)
+
+In this example, we showcase the usage of an external API for phone number validation. It uses the [NumVerify API](https://numverify.com/) to validate phone numbers. The API is free to use. It returns a JSON response containing information about the phone number, including the country, location, carrier, and line type.
