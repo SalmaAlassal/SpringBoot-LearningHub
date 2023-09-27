@@ -4,36 +4,139 @@ Annotations are special notes added to code. Spring Boot annotations provide ins
 
 For example, let's say you use the `@RestController` annotation on a class. This annotation tells Spring Boot that this class should handle web requests and send back responses. Spring Boot reads this instruction and sets up everything behind the scenes to make it happen.
 
-## List of Annotations
+# List of Annotations
 
 Here's a list of the annotations that I've used in my code examples:
 
-### `@SpringBootApplication`
-
-This annotation is used to mark the main class of your Spring Boot application. It tells Spring Boot that this class is the starting point of your application.
-
+## Core Spring Boot Annotations
 
 ### `@Controller`
 
 This annotation is used to mark a class as a controller. It tells Spring Boot that this class should handle web requests and send back responses.
 
+### `@RestController`
 
-### `GetMapping("/path")`
+The `@RestController` annotation is a convenience annotation that combines `@Controller` and `@ResponseBody`. It tells Spring Boot that this class should handle web requests and send back responses.
+
+**Key Points about `@RestController` :**
+   - Unlike `@Controller`, where you need to use `@ResponseBody` to indicate that a method's return value should be serialized and sent as an HTTP response, `@RestController` implicitly includes `@ResponseBody`. It means every method within a `@RestController` class returns the actual data to be sent as a response, rather than the name of a view.
+
+### `@Repository`
+
+This annotation is used to mark a class as a repository. It tells Spring Boot that this class should be used to access the database.
+
+### `@Service`
+
+This annotation is used to mark a class as a service. It tells Spring Boot that this class should be used to perform business logic.
+
+--------------------------------------------
+
+## General Annotations
+
+### `@SpringBootApplication`
+
+This annotation is used to mark the main class of your Spring Boot application. It tells Spring Boot that this class is the starting point of your application.
+
+--------------------------------------------
+
+## Spring MVC & REST Annotations
+
+### `@GetMapping("/path")`
 
 This annotation is used to map a GET request to a specific path. It tells Spring Boot that this method should be called when a GET request is made to the specified path.
+
+### `PostMapping("/path")`
+
+This annotation is used to map a POST request to a specific path. It tells Spring Boot that this method should be called when a POST request is made to the specified path.
+
+### `@PutMapping("/path")`
+
+This annotation is used to map a PUT request to a specific path. It tells Spring Boot that this method should be called when a PUT request is made to the specified path.
+
+### `@DeleteMapping("/path")`
+
+This annotation is used to map a DELETE request to a specific path. It tells Spring Boot that this method should be called when a DELETE request is made to the specified path.
+
+
+###  `@RequestMapping(method = RequestMethod.GET, value = "/path")`
+
+This annotation is used to map a request to a specific path.
+
+You can specify the HTTP method and the path in the annotation.
 
 ### `@ResponseBody`
 
 This annotation is used to mark a method as a response body. It tells Spring Boot that this method should return the response body which will be sent back to the client.
 
-###  `@RequestMapping(method = RequestMethod.GET, value = "/path")` 
+### `@RequestBody`
 
-This annotation is used to map a request to a specific path. It tells Spring Boot that this method should be called when a request is made to the specified path.
 
-### `RequestMapping(method = RequestMethod.POST, value = "/path")`
+###  `@PathVariable`
 
-This annotation is used to map a POST request to a specific path. It tells Spring Boot that this method should be called when a POST request is made to the specified path.
+This annotation is used to extract a path variable from the request URL. E.g., `/users/{id}`
 
-###  `@PathVariable` 
+### `@RequestParam`
 
-This annotation is used to mark a method parameter as a path variable. It tells Spring Boot that this parameter should be populated with the value of the path variable in the request URL. 
+This annotation is used to extract a request parameter from the request URL. E.g., `?name=Salma`
+
+--------------------------------------------
+
+## Spring JPA and Hibernate Annotations
+
+
+### `@Query`
+
+Specifies a JPQL or a native SQL query for custom repository methods.
+
+### `@Entity`
+
+This annotation is used to mark a class as an entity. It tells Spring Boot that this class should be mapped to a database table.
+
+### `@Table`
+
+This annotation is used to mark a class as a table. It tells Spring Boot that this class should be mapped to a database table.
+
+### `@Id`
+
+This annotation is used to mark a field as the primary key of an entity. It tells Spring Boot that this field should be mapped to the primary key column in the database table.
+
+### `@GeneratedValue`
+
+This annotation is used to mark a field as a generated value. It tells Spring Boot that this field should be generated by the database when a new record is inserted into the table.
+
+- `strategy = GenerationType.IDENTITY` - This strategy will help us to generate the primary key value by the database itself using the auto-increment column option. It relies on the database’s native support for generating unique values.
+
+- `strategy = GenerationType.SEQUENCE` - This strategy uses a database sequence to generate primary key values. It requires the usage of database sequence objects, which varies depending on the database which is being used.
+
+- `strategy = GenerationType.AUTO` - This strategy will let the persistence provider(e.g, hibernate) choose the generation strategy. It selects the strategy based on the database-specific dialect. It is the default generation type.
+
+
+### `@Column`
+
+This annotation is used to mark a field as a column. It tells Spring Boot that this field should be mapped to a column in the database table.
+
+### `@OneToOne`
+
+Indicates `1:1` relationship
+
+### `@OneToMany`
+
+Indicates `1:N` relationship
+
+The one side is the entity that owns the relationship.
+
+### `@ManyToOne`
+
+Indicates `N:1` relationship
+
+the entity containing annotated field has a single relation to an entity of other class, but the other class has multiple relations
+
+### `@ManyToMany`
+
+Indicates `N:N` relationship
+
+### `@JoinColumn`
+
+This annotation is used to mark a field as a join column. It is used to specify the foreign key column in the database table.
+
+--------------------------------------------
