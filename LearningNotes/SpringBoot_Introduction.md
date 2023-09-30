@@ -83,6 +83,10 @@ public class DemoApplication {
 }
 ```
 
+![Spring Boot Auto-configuration](https://media.geeksforgeeks.org/wp-content/uploads/20220221113301/AutoConfigurationSpring.jpg)
+
+[Read more](https://www.geeksforgeeks.org/spring-boot-auto-configuration/)
+
 ### Spring Boot CLI
 
 ### Spring Boot Actuator
