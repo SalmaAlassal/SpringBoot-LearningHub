@@ -1,12 +1,16 @@
 # Beans
 
-Beans in Spring Boot are simply Java objects managed by the Spring framework. The annotations help identify which classes should be treated as beans, and Spring takes care of their creation and management. 
+A bean is an object that is instantiated, assembled, and managed by the **Spring IoC container**. One of the key features of the Spring container is its ability to manage the lifecycle of beans, which includes creating, configuring, and destroying beans as necessary.
+
+Beans in Spring Boot are simply Java objects managed by the Spring framework. The annotations help identify which classes should be treated as beans, and Spring takes care of their creation and management.
 
 In Spring Boot, every annotation that is part of the Spring framework's stereotype annotations, such as `@Component`, `@Service`, `@Repository`, and `@Controller`, among others, is used to define a bean.
 
 When you annotate a class with one of these annotations, you are essentially telling the Spring framework that the class should be treated as a bean. The Spring container then manages the lifecycle of these beans, including creating instances, injecting dependencies, and handling any necessary configuration.
 
 It's worth noting that Spring Boot also provides additional annotations for specific purposes, such as `@Configuration` for defining configuration classes and `@Autowired` for dependency injection. While these annotations are not specifically stereotype annotations, they work in conjunction with the stereotype annotations to define and manage beans in a Spring Boot application.
+
+----------------------------------------
 
 ## Bean Creation
 
@@ -21,6 +25,7 @@ public class MyBean {
 
 In this example, the `@Component` annotation tells Spring that the `MyBean` class should be treated as a bean. Spring will then create an instance of this class and manage its lifecycle.
 
+----------------------------------------
 
 ## Bean Names
 
@@ -54,13 +59,47 @@ The `@Qualifier` annotation is used to specify the name of the bean to be inject
 
 By using the custom bean name and the `@Qualifier` annotation, you can control the name of the bean and ensure that the correct bean is injected when multiple beans of the same type are available in the application context.
 
-## Beans Scopes
+----------------------------------------
+
+## Bean Scopes
+
+The scope of a bean can be specified in the configuration file using the scope attribute of the bean element.
+
+It is very important to choose the right scope for a bean, as it can affect the behavior and performance of the application.
+
+| Scope | Description |
+| ----- | ----------- |
+| Singleton | Default scope. Only one instance of the bean is created, shared by all requesting objects. |
+| Prototype | A new instance of the bean is created each time it is requested. |
+| Request | This is same as prototype scope, however it’s meant to be used for web applications. A new instance for each HTTP request. Available only in a web-aware Spring application. |
+| Session | A new instance for each HTTP session. Available only in a web-aware Spring application. |
+| Application | A single instance for the entire lifecycle of the application(ServletContext). Available only in a web-aware Spring application. |
+| Web Socket | A new instance for each WebSocket connection. Available only in a web-aware Spring application. |
 
 ### Singleton Beans
 
-This is the default scope in Spring. In the singleton scope, Spring creates a **single instance** of the bean per container and shares that instance throughout the application. Every time a bean with a singleton scope is requested, the same instance is returned.
+- This is the default scope in Spring.
 
-By default, all beans in Spring Boot are singleton beans. This means that if you annotate a class with `@Component`, `@Service`, `@Repository`, or `@Controller`, the bean will be a singleton bean.
+- In the singleton scope, Spring creates a **single instance** of the bean per container and shares that instance throughout the application.
+
+- Every time a bean with a singleton scope is requested, the same instance is returned.
+
+- By default, all beans in Spring Boot are singleton beans. This means that if you annotate a class with `@Component`, `@Service`, `@Repository`, or `@Controller`, the bean will be a singleton bean.
+
+**Example:**
+
+```java
+@Configuration
+public class MyConfiguration {
+	
+	@Bean
+	@Scope(value="singleton")
+    public MyBean myBean() {
+		return new MyBean();
+	}
+	
+}
+```
 
 ### Prototype Beans
 
@@ -68,16 +107,20 @@ In this scope, Spring creates a new instance of the bean every time it is reques
 
 To create a prototype bean, you can use the `@Scope` annotation and set the scope to `prototype`. Here's an example:
 
+**Example:**
+
 ```java
-@Component
-@Scope("prototype")
-public class MyBean {
-    // Class implementation...
+@Configuration
+public class MyConfiguration {
+	
+	@Bean
+	@Scope(value="prototype")
+    public MyBean myBean() {
+		return new MyBean();
+    }
 }
 ```
-
-In this example, the `MyBean` class is annotated with `@Scope("prototype")`, which tells Spring that the bean should be a prototype bean. Now, whenever you inject this bean into another class, a new instance will be created every time.
-
+----------------------------------------
 
 ## Multiple Beans of the Same Type
 
@@ -178,4 +221,4 @@ With these changes, when `NotificationHandler` is instantiated, the appropriate 
 
 This approach allows you to differentiate between multiple beans of the same type and ensure that the correct beans are injected based on your requirements.
 
---------------------------
+----------------------------------------
