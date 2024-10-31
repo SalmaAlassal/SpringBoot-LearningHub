@@ -1,3 +1,9 @@
+# Web Application
+
+A web application is a software application that runs on a web server. It is accessed by a user through a web browser with an active internet connection.
+
+It composed of web components like **HTML pages**, **CSS stylesheets**, **JavaScript scripts**, **images**, **videos**, **Java Servlets**, **JSPs**, etc.
+
 # Web Server
 
 A web server is a simple server to serve static content. It only supports static resource, like image and HTML files. However, it cannot handle dynamic containers.
@@ -14,11 +20,11 @@ A web server is a simple server to serve static content. It only supports static
 
 ![Static vs Dynamic Content](imgs/Static-and-dynamic-Website.png)
 
-# Web Container
+# Web Container (Servlet Container)
 
-- A web container, also known as a **servlet container**, is a component of a web server that manages the execution of servlets and JavaServer Pages (JSP).
+- A web container, also known as a **servlet container**, is a component of a web server that manages the execution of Servlets and JavaServer Pages (JSP). It is responsible for generating dynamic content through servlets and JSPs.
 
-> Web Container = Servlet container, supports JSP/Servlet API
+-  Web Container = Servlet container, supports JSP/Servlet API
 
 - A web container is responsible for managing the lifecycle of servlets, mapping a URL to a particular servlet and ensuring that the URL requester has the correct access rights.
 
@@ -28,23 +34,33 @@ A web server is a simple server to serve static content. It only supports static
 
 - It works in Web Server, e.g., Tomcat lives in Apache
 
-- It generates some static content and returns responses
+![Web Container](imgs/servlet-as-threads.webp)
 
-![Web Container](imgs/web-container.png)
+- **Step 1 :** Client i.e. web browser sends the request to the web server.
+- **Step 2 :** Web server receives the request and sends it to the servlet container. Servlet container is also called web container or servlet engine. It is responsible for handling the life of a servlet.
+- **Step 3 :** Servlet container understands the request’s URL and calls the particular servlet. Actually, it creates a thread for execution of that servlet. If there are multiple requests for the same servlet, then for each request, one thread will be created.
+- **Step 4 :** Servlet processes the request object and prepares response object after interacting with the database or performing any other operations and sends the response object back to the web server.
+- **Step 5 :** Then web server sends the response back to the client.
+
+
 
 # Tomcat
 
-- Tomcat is both a web server and a web container (servelt container), but it’s not really meant to function as a high-performance web server, nor does it include some features typical of a web server.
+- Tomcat provides a robust and scalable environment for dynamic web content, managing Java servlets to process requests and generate responses efficiently.
+
+- Servlet containers like Tomcat provide a runtime environment for Java servlets, which extend web server functionality by generating dynamic content and handling web requests. They manage the lifecycle of servlets, ensuring smooth operation by loading and unloading them as needed.
+
+- It can be used only for hosting JAVA based code.
 
 - Tomcat is developed and maintained by Apache Software Foundation.
 
 # Apache vs Tomcat
 
-- Apache only supports static ordinary web pages such as HTML. It can connect Tomcat in one direction; Tomcat is a Servlet container that can support JSP, PHP and CGI, etc.
+- Apache is a **web server**, and Tomcat is a **servlet container**. Tomcat is mainly a Java application server, whereas Apache is a general-purpose web server.
 
-- Apache Web Server serves static content efficiently.
+- Tomcat is used to serve **dynamic content** such as Java Servlets and JSP files, while Apache is used to serve **static content.**
 
-- Tomcat serves dynamic content, it also can handle static content, but less efficient.
+- Tomcat can also serve static content, but apache is more efficient in doing so.
 
 ----------------------------------------------------------------
 
@@ -57,16 +73,15 @@ A web server is a simple server to serve static content. It only supports static
 
 # Servlets
 
-Servlets are simple Java files that are used to create dynamic content on the server side. These servlets are stored in web containers such as TOMCAT, GLASS FISH and JBOSS.
+- Servlets are simple Java files that are used to create dynamic content on the server side. These servlets are stored in web containers such as TOMCAT, GLASS FISH and JBOSS.
 
-A Servlet is a class that handles requests, processes them and reply back with a response.
+- A Servlet is a class that handles requests, processes them and reply back with a response.
 
-For example, we can use a Servlet to collect input from a user through an HTML form, query records from a database, and create web pages dynamically.
+- For example, we can use a Servlet to collect input from a user through an HTML form, query records from a database, and create web pages dynamically.
 
-Servlets are under the control of **Servlet Container**. When an application running in a web server receives a request, the Server hands the request to the Servlet Container – which in turn passes it to the target Servlet.
+- Servlets are under the control of **Servlet Container**. When an application running in a web server receives a request, the Server hands the request to the Servlet Container – which in turn passes it to the target Servlet.
 
 ![Servlets](imgs/Java-Servlets.webp)
-
 
 ## Servlet Lifecycle
 
@@ -74,9 +89,9 @@ A Servlet has a well-defined lifecycle that is implemented through the `init()`,
 
 ![Servlet Lifecycle](imgs/Servlet-life-Cycle.webp)
 
-### init()
+### `init()`
 
-The init() method is called only once during the lifecycle of a Servlet. It is called when the Servlet is first created, and not called again for each user request.
+The `init()` method is called only once during the lifecycle of a Servlet. It is called when the Servlet is first created, and not called again for each user request.
 
 The init method is designed to be called only once. If an instance of the servlet does not exist, the **web container**:
    1. Loads the servlet class
@@ -91,11 +106,11 @@ public void init() throws ServletException {
 }
 ```
 
-### service()
+### `service()`
 
-This method is only called after the servlet’s init() method has completed successfully.
+This method is only called after the servlet’s `init()` method has completed successfully.
 
-The Container calls the service() method to handle requests coming from the client, interprets the HTTP request type (GET, POST, PUT, DELETE, etc.) and calls doGet, doPost, doPut, doDelete, etc. methods as appropriate.
+The Container calls the `service()` method to handle requests coming from the client, interprets the HTTP request type (GET, POST, PUT, DELETE, etc.) and calls doGet, doPost, doPut, doDelete, etc. methods as appropriate.
 
 ```java
 public void service(ServletRequest request, ServletResponse response)
@@ -104,7 +119,7 @@ public void service(ServletRequest request, ServletResponse response)
 }
 ```
 
-### destroy()
+### `destroy()`
 
 Called by the **Servlet Container** to take the Servlet out of service.
 
@@ -148,9 +163,9 @@ public interface Filter {
 
 # Servlet Listener
 
-They provide a way to execute code when certain event occurs.
+- They provide a way to execute code when certain event occurs.
 
-Listeners are generally used in cases where you want to
+- Listeners are generally used in cases where you want to
    - execute some actions or load some data/configuration on application startup,
    - or to open and close database connections on the occurrence of an event
    - and to perform any actions on the application being shut down.
