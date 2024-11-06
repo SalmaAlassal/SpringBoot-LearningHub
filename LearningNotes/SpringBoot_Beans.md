@@ -1,14 +1,25 @@
 # Beans
 
-A bean is an object that is instantiated, assembled, and managed by the **Spring IoC container**. One of the key features of the Spring container is its ability to manage the lifecycle of beans, which includes creating, configuring, and destroying beans as necessary.
+- A bean is a Java object managed by the Spring IoC container. Bean is an object that we can inject in any class and we need not worry about its instantiation or its dependencies as that is taken care by the framework itself.
 
-Beans in Spring Boot are simply Java objects managed by the Spring framework. The annotations help identify which classes should be treated as beans, and Spring takes care of their creation and management.
+- So bean is a predefined, preconfigured and pre-instantiated object of a certain class.
 
-In Spring Boot, every annotation that is part of the Spring framework's stereotype annotations, such as `@Component`, `@Service`, `@Repository`, and `@Controller`, among others, is used to define a bean.
+- The beans in Spring are stored in an IoC container which is often referred as **Application Context**.
 
-When you annotate a class with one of these annotations, you are essentially telling the Spring framework that the class should be treated as a bean. The Spring container then manages the lifecycle of these beans, including creating instances, injecting dependencies, and handling any necessary configuration.
+- One of the key features of the Spring container is its ability to manage the lifecycle of beans, which includes creating, configuring, and destroying beans as necessary.
 
-It's worth noting that Spring Boot also provides additional annotations for specific purposes, such as `@Configuration` for defining configuration classes and `@Autowired` for dependency injection. While these annotations are not specifically stereotype annotations, they work in conjunction with the stereotype annotations to define and manage beans in a Spring Boot application.
+- In Spring Boot, every annotation that is part of the Spring framework's stereotype annotations, such as `@Component`, `@Service`, `@Repository`, and `@Controller`, among others, is used to define a bean.
+
+- When you annotate a class with one of these annotations, you are essentially telling the Spring framework that the class should be treated as a bean. The Spring container then manages the lifecycle of these beans, including creating instances, injecting dependencies, and handling any necessary configuration.
+    > There are older way to define beans in Spring using XML configuration. But with the introduction of annotations, the XML configuration is not used much.
+
+- It's worth noting that Spring Boot also provides additional annotations for specific purposes, such as `@Configuration` for defining configuration classes and `@Autowired` for dependency injection. While these annotations are not specifically stereotype annotations, they work in conjunction with the stereotype annotations to define and manage beans in a Spring Boot application.
+
+- There are 3 ways to provide beans configuration:
+    - XML Configuration
+    - Annotation-based Configuration
+    - Java-based Configuration
+    > XML configurations override the annotation-based configurations if you have both.
 
 ----------------------------------------
 
@@ -23,112 +34,99 @@ public class MyBean {
 }
 ```
 
-In this example, the `@Component` annotation tells Spring that the `MyBean` class should be treated as a bean. Spring will then create an instance of this class and manage its lifecycle.
+In this example, the `@Component` annotation tells Spring that the `MyBean` class should be treated as a bean. Spring will then create an instance of this class and store it in the application context and manage its lifecycle.
 
 ----------------------------------------
 
-## Bean Names
+## Bean Definition
 
-Every bean has a name, which is used to identify it in the application context. By default, the name of a bean is the name of the class with the first letter in lowercase. For example, if you have a class called `MyBean`, the name of the bean will be `myBean`.
+- Spring framework provides represents beans as `BeanDefinition` objects.
 
-To change the bean name, you can specify a custom name using the `value` attribute of the annotation. Here's an example:
+- A `BeanDefinition` object has several properties that define the characteristics of a bean, such as its class, scope, name, properties...etc.
+
+### `class` Property
+
+- `class` property of the bean is the fully qualified name of the class that IOC container will instantiate.
+
+- When the container instantiates a bean from a class it populates the class property of that bean with the fully qualified name we have provided.
+
+- For example, if we have a class `MyBean` in the package `com.example`, then the class property of the bean will be `com.example.MyBean`.
+
+### `properties` Property
+
+- The properties property of the bean is populated from the properties of the class.
+
+- For example,  If we have used a built-in type such as an `int` or a `string`, the container converts the property of our class into the same type of property for the bean. However, if we have used a custom type, such as `Animal` or `Driver`, this is a dependency and the container now has to create a `BeanDefinition` object for each of these types as well.
+    > When a class encapsulates other objects, the referenced objects become a dependency for the outer class. In other words, these other objects must be created so the outer class can use it. The container takes a look at our classes and, depending on the method you choose, instantiates beans from the referenced objects before it instantiates a bean from the outer classes. This process is known as dependency injection; Our classes no longer have to instantiate their own dependencies. Therefore, we can say the control of dependencies has been inverted back to the container, and this is why we call it an Inversion of Control (IoC) container.
+
+### `name` Property
+
+- The name property of the bean is the name of the bean in the application context and is used to identify the bean.
+
+- By default, the name of a bean is the name of the class with the first letter in lowercase. For example, if you have a class called `MyBean`, the name of the bean will be `myBean`.
+    > Bean names start with a lowercase letter, and are camel-cased from then on.
+
+- To change the bean name, you can specify a custom name using the `value` attribute of the annotation. Here's an example:
+
+    ```java
+    @Component("myCustomBeanName")
+    public class MyBean {
+        // Class implementation...
+    }
+    ```
+    In this example, the bean name is set to `myCustomBeanName`. You can then refer to this bean using its custom name when autowiring or injecting dependencies.
+
+    ```java
+    @Service
+    public class MyService {
+        private final MyBean myBean;
+
+        public MyService(@Qualifier("myCustomBeanName") MyBean myBean) {
+            this.myBean = myBean;
+        }
+        
+        // Class implementation...
+    }
+    ```
+
+    The `@Qualifier` annotation is used to specify the name of the bean to be injected. In this case, we provide the custom bean name `myCustomBeanName` as the qualifier.
+
+    By using the custom bean name and the `@Qualifier` annotation, you can control the name of the bean and ensure that the correct bean is injected when multiple beans of the same type are available in the application context.
+
+### `scope` Property
+
+- It is very important to choose the right scope for a bean, as it can affect the behavior and performance of the application.
+
+| Scope     | Description |
+| --------- | ----------- |
+| Singleton | **Default scope.** Only one instance of the bean is created per container, shared by all requesting objects. |
+| Prototype | A new instance of the bean is created each time it is requested.                                             |
 
 ```java
-@Component("myCustomBeanName")
+@Component
+// @Scope("singleton") // Default scope
+@Scope("prototype")
 public class MyBean {
     // Class implementation...
 }
 ```
 
-In this example, the bean name is set to "myCustomBeanName". You can then refer to this bean using its custom name when autowiring or injecting dependencies.
+**Available only in a web-aware Spring application:**
 
-```java
-@Service
-public class MyService {
-    private final MyBean myBean;
+| Scope      | Description |
+| ---------- | ----------- |
+| Request    | A new instance for each HTTP request.|
+| Session    | A new instance for each HTTP session. |
+| Application| A single instance for the entire lifecycle of the application(ServletContext).|
+| Web Socket | A new instance for each WebSocket connection. |
 
-    public MyService(@Qualifier("myCustomBeanName") MyBean myBean) {
-        this.myBean = myBean;
-    }
-    
-    // Class implementation...
-}
-```
-
-The `@Qualifier` annotation is used to specify the name of the bean to be injected. In this case, we provide the custom bean name "myCustomBeanName" as the qualifier.
-
-By using the custom bean name and the `@Qualifier` annotation, you can control the name of the bean and ensure that the correct bean is injected when multiple beans of the same type are available in the application context.
-
-----------------------------------------
-
-## Bean Scopes
-
-The scope of a bean can be specified in the configuration file using the scope attribute of the bean element.
-
-It is very important to choose the right scope for a bean, as it can affect the behavior and performance of the application.
-
-| Scope | Description |
-| ----- | ----------- |
-| Singleton | Default scope. Only one instance of the bean is created, shared by all requesting objects. |
-| Prototype | A new instance of the bean is created each time it is requested. |
-| Request | This is same as prototype scope, however it’s meant to be used for web applications. A new instance for each HTTP request. Available only in a web-aware Spring application. |
-| Session | A new instance for each HTTP session. Available only in a web-aware Spring application. |
-| Application | A single instance for the entire lifecycle of the application(ServletContext). Available only in a web-aware Spring application. |
-| Web Socket | A new instance for each WebSocket connection. Available only in a web-aware Spring application. |
-
-### Singleton Beans
-
-- This is the default scope in Spring.
-
-- In the singleton scope, Spring creates a **single instance** of the bean per container and shares that instance throughout the application.
-
-- Every time a bean with a singleton scope is requested, the same instance is returned.
-
-- By default, all beans in Spring Boot are singleton beans. This means that if you annotate a class with `@Component`, `@Service`, `@Repository`, or `@Controller`, the bean will be a singleton bean.
-
-**Example:**
-
-```java
-@Configuration
-public class MyConfiguration {
-	
-	@Bean
-	@Scope(value="singleton")
-    public MyBean myBean() {
-		return new MyBean();
-	}
-	
-}
-```
-
-### Prototype Beans
-
-In this scope, Spring creates a new instance of the bean every time it is requested. Each instance is independent of the others and has a separate lifecycle.
-
-To create a prototype bean, you can use the `@Scope` annotation and set the scope to `prototype`. Here's an example:
-
-**Example:**
-
-```java
-@Configuration
-public class MyConfiguration {
-	
-	@Bean
-	@Scope(value="prototype")
-    public MyBean myBean() {
-		return new MyBean();
-    }
-}
-```
 ----------------------------------------
 
 ## Multiple Beans of the Same Type
 
-In a Spring Boot application, there can be multiple types of beans when you have multiple implementations or configurations for a particular interface or class. Let's consider an example:
+- There can be multiple types of beans when you have multiple implementations or configurations for a particular interface or class.
 
-Suppose you have an interface called `NotificationService`, which is responsible for sending notifications. Now, you want to have two different implementations of this interface: `EmailNotificationService` and `SMSNotificationService`.
-
-To achieve this, you can create two separate classes implementing the `NotificationService` interface. For example:
+- Suppose you have an interface called `NotificationService`, which is responsible for sending notifications. Now, you want to have two different implementations of this interface: `EmailNotificationService` and `SMSNotificationService`. To achieve this, you can create two separate classes implementing the `NotificationService` interface. For example:
 
 ```java
 public interface NotificationService {
@@ -150,7 +148,7 @@ public class SMSNotificationService implements NotificationService {
 }
 ```
  
-> The bean type in Spring represents the class or interface that a bean belongs to. 
+> The bean type in Spring represents the class or interface that a bean belongs to.
 
 In this case, you have defined two beans of type `NotificationService`: `EmailNotificationService` and `SMSNotificationService`. Each of these beans provides a different implementation for the same interface.
 

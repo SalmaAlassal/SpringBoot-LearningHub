@@ -41,6 +41,18 @@ This dependency is used to build Spring Data JPA repositories. It simplifies dat
 </dependency>
 ```
 
+### Spring Boot Webflux
+
+This dependency is used to build reactive web applications using Spring Webflux. It provides the necessary libraries, configurations, and tools to develop web applications that can handle asynchronous and non-blocking operations efficiently.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+    <version>3.1.3</version>
+</dependency>
+```
+
 ----------------------------------------------
 
 ## Database Dependencies

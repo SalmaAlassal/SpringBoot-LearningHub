@@ -16,6 +16,7 @@
 - [PUT](#put)
 - [UPDATE](#update)
 - [DELETE](#delete)
+- [PATCH](#patch)
 
 ## GET
 
@@ -40,6 +41,13 @@
 - **Description**: The DELETE method is used to delete a resource from the server.
 
 - **Request Format**: DELETE requests include the resource to delete in the request body. For example: `DELETE /api/users/123` with the user to delete.
+
+## PATCH
+
+- **Description**: Unlike PUT Request, PATCH does **partial update** e.g. Fields that need to be updated by the client, only that field is updated without modifying the other field. The PATCH request only needs to contain the changes to the resource, not the complete resource.
+
+- **Request Format**: PATCH requests include the updated resource representation in the request body. For example: `PATCH /api/users/123` with the updated user data.
+
 
 # HTTP Status Codes
 
@@ -264,3 +272,11 @@ Content-Type: text/html; charset=UTF-8
 ```
 
 ------------------------------------------------------------
+
+## Synchrounous vs Asynchronous HTTP Requests
+
+- **Synchronous** HTTP requests are blocking or long-running operations that prevent the user from interacting with the application while the request is being processed.
+
+- **Asynchronous** HTTP requests are non-blocking or short-running operations that allow the user to interact with the application while the request is being processed.
+
+Asynchronous requests are generally preferred for web applications to provide a more responsive user experience and better utilize resources.

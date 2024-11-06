@@ -59,6 +59,20 @@ APIs work through a request and response mechanism. The requesting software send
 
 - REST is not a protocol but an architectural style. It can work with several different data formats like **JSON, XML, and plain text.**
 
+### REST API vs Websocket API
+
+- **Communication Pattern**:
+    - **REST APIs** are based on the client-server model, where the client sends a request to the server, and the server sends a response back to the client.
+    - **Websocket APIs** are based on the publish-subscribe model, where the server can send messages to the client without the client having to request them. It allows for real-time communication between the client and server.
+
+- **State**:
+    - **REST APIs are stateless,** meaning each request from the client to the server is independent. The server doesn’t retain any information about past requests, making it ideal for simpler, more modular systems.
+    - **Websocket APIs are stateful,** where once a connection is established, it remains open and maintains context until it's closed by either party.
+
+- **Use Cases**:
+    - **REST APIs** are suitable for CRUD (Create, Read, Update, Delete) operations and are ideal for web applications that require data retrieval and manipulation.
+    - **Websocket APIs** are ideal for real-time applications like chat apps, online games, collaborative editing tools(like Google Docs), and live streaming services.
+
 --------------------------------------------------------------------------------
 
 ## API Scope
