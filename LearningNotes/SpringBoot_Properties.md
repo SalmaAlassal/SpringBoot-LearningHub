@@ -54,13 +54,11 @@ This will change the port to `8081` so the application will run on `http://local
 
 ---------------------------------------------
 
-
-
-
-
-
-<!-- ##
+## SQL Logging
 
 | Property | Description |
 | -------- | ----------- |
-|`spring.jpa.defer-datasource-initialization=true`|Delay the datasource initialization until all the beans are created.| -->
+|`spring.jpa.show-sql=true` | Enables logging of SQL statements executed by JPA. This displays each SQL query in the application logs as they are executed, which helps with debugging and monitoring database interactions.|
+|`spring.jpa.properties.hibernate.format_sql=true`|Formats the SQL output, making each statement more readable by organizing it with proper indentation and line breaks. |
+
+---------------------------------------------
