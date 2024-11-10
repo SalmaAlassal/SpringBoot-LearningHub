@@ -319,3 +319,25 @@ private Set<Order> orders;
 ![Lazy Fetch](./imgs/lazy-fetch.png)
 
 - **Lazy fetching** can becoem a performance issue if you access the related entities frequently. Each time you access a related entity, JPA will need to fetch it from the database, which can result in multiple database queries. This is known as the **N+1 query/select problem.**
+
+##### N+1 Select Problem
+
+- The n+1 select problem occurs when an application loads an entity and then lazily loads its associated entities in separate queries, causing unnecessary database calls and impacting performance.
+
+- Here’s how it works:
+    - When you retrieve a main entity (e.g., an `Order`), a single query is executed for that entity.
+    - For each associated entity (e.g., `Items` in the Order), an additional query is executed to fetch each relation.
+- Example:
+    - **Scenario**: You have an `Order` entity with 5 associated entities (e.g., `Items`, `Customer`, `Address`, etc.).
+    - **Queries**: This results in:
+        - **1 query** to fetch the `Order`
+        - **5 additional queries** to fetch each associated entity (1 for each relation).
+        - **Total = 1 + 5 = 6 queries**
+
+    If 100 users make requests in parallel:
+    - **Total queries = 100 * (1 main query + 5 additional queries)** = **100 * 6 = 600 queries**
+    This exponential growth in queries is the essence of the *n+1 select problem*, where performance degradation becomes increasingly significant as the number of associations and users grows so that the application becomes slow.
+
+##### Avoiding the N+1 Select Problem
+
+TODO
