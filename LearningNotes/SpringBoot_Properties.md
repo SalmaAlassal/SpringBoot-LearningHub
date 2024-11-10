@@ -1,5 +1,7 @@
 # Spring Boot Properties
 
+> [Appendix A. Common application properties](https://docs.spring.io/spring-boot/docs/1.1.6.RELEASE/reference/html/common-application-properties.html)
+
 Spring Boot properties are normally stored in a file named `application.properties`. This file is located in the `src/main/resources` folder of your project.
 
 This file contains the different configuration which is required to run the application in a different environment, and each environment will have a different property defined by it. Inside the application properties file, we define every type of property like changing the port, database connectivity, and many more.
