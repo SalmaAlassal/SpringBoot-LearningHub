@@ -52,3 +52,7 @@ This example demonstrates how to use Spring Boot Data REST to create a RESTful w
 ## Example 9 : [Phone Number Validation](PhoneNumberValidation)
 
 This example demonstrates how to utilize the `RestTemplate` class for making HTTP requests to the API and converting the response into a Java object. It leverages the [NumVerify API](https://numverify.com/) to validate phone numbers. The API is available for free and provides a JSON response that includes details about the phone number, such as the country, location, carrier, and line type.
+
+## Example 10 : [CascadeTypeDemo](CascadeTypeDemo)
+
+This example demonstrates the usage of the `CascadeType` attribute in JPA and the differnce between `CascadeType.REMOVE` and `OrphanRemoval`. Try to comment and uncomment the code to see the difference.
