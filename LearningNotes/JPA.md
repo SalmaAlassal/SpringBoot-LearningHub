@@ -203,6 +203,68 @@
     }
     ```
 
+## Jackson Bidirectional Relationships
+
+- **Jackson** is a popular Java library for serializing and deserializing Java objects to and from JSON. When serializing entities with bidirectional relationships, you may encounter issues with infinite recursion or stack overflow errors.
+
+- **Infinite Recursion**: When serializing entities with bidirectional relationships, Jackson will keep serializing the same entities over and over again, leading to an infinite loop.
+    - For example, when serializing a `Department` entity that has a list of `Employee` entities, Jackson will serialize the `Department` entity, then the `Employee` entities, which will in turn serialize the `Department` entity again, and so on.
+        ```json
+        {
+            "id": 1,
+            "name": "HR",
+            "employees": [
+                {
+                    "id": 1,
+                    "name": "Alice",
+                    "department": {
+                        "id": 1,
+                        "name": "HR",
+                        "employees": [
+                            {
+                                "id": 1,
+                                "name": "Alice",
+                                "department": {
+                                    "id": 1,
+                                    "name": "HR",
+                                    "employees": [
+                                        ...
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+        ```
+
+- **Solution**: To prevent infinite recursion, you can use Jackson’s `@JsonManagedReference` and `@JsonBackReference` annotations to define the owning and inverse sides of the relationship.
+
+    - **`@JsonManagedReference`**: Used on the owning side of the relationship to indicate that this side is responsible for managing the relationship.
+    - **`@JsonBackReference`**: Used on the inverse side of the relationship to indicate that this side should be ignored during serialization.
+    ```java
+    @Entity
+    public class Student {
+        @ManyToMany
+        @JsonManagedReference
+        private Set<Course> courses;
+    }
+
+    @Entity
+    public class Course {
+        @ManyToMany(mappedBy = "courses")
+        @JsonBackReference
+        private Set<Student> students;
+    }
+    ```
+    
+> Serialization means converting an object into a stream of bytes to store the object or transmit it to memory, a database, or a file. Its main purpose is to save the state of an object to be able to recreate it when needed.
+
+> A byte stream is just a stream of binary data. Because only binary data can be stored or transported.
+
+> Deserialization is the exact opposite process of serialization where the byte data type stream is converted back to an object in the memory. 
+
 --------------------------------------------
 
 ## Different Query Types in Spring Data Repositories
