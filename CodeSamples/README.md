@@ -56,3 +56,7 @@ This example demonstrates how to utilize the `RestTemplate` class for making HTT
 ## Example 10 : [CascadeTypeDemo](CascadeTypeDemo)
 
 This example demonstrates the usage of the `CascadeType` attribute in JPA and the differnce between `CascadeType.REMOVE` and `OrphanRemoval`. Try to comment and uncomment the code to see the difference.
+
+## Example 11 : [GlobalExceptionHandlerDemo](GlobalExceptionHandlerDemo)
+
+This example demonstrates how to create a global exception handler. It showcases how to handle exceptions globally in a Spring Boot application using the `@ControllerAdvice` annotation and the `@ExceptionHandler` annotation. The global exception handler intercepts exceptions thrown by the application and provides a centralized mechanism to handle them, returning a custom error response to the client.
