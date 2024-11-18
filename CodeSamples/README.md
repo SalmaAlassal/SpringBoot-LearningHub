@@ -60,3 +60,11 @@ This example demonstrates the usage of the `CascadeType` attribute in JPA and th
 ## Example 11 : [GlobalExceptionHandlerDemo](GlobalExceptionHandlerDemo)
 
 This example demonstrates how to create a global exception handler. It showcases how to handle exceptions globally in a Spring Boot application using the `@ControllerAdvice` annotation and the `@ExceptionHandler` annotation. The global exception handler intercepts exceptions thrown by the application and provides a centralized mechanism to handle them, returning a custom error response to the client.
+
+## Example 12 : [TestingDemo](TestingDemo)
+
+This example demonstrates how to write unit tests for a Spring Boot application using JUnit 5 and Mockito. It showcases how to test controllers and repositories.
+
+## Example 13 : [SpringBatchDemo](SpringBatchDemo)
+
+This example demonstrates how to use Spring Batch. It showcases the creation of a simple batch job with 2 steps and listeners.
