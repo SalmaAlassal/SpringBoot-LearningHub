@@ -20,11 +20,11 @@
     ```
 ---------------------------------------------------
 
-## Primary components of Spring Batch
+# Primary components of Spring Batch
 
 ![Spring Batch](./imgs/spring-batch.png)
 
-### JobLauncher
+## JobLauncher
 
 - `JobLauncher` is initiated from the job scheduler or any other mechanism. `JobLauncher` triggers the `job` with `JobParameters` (e.g., timestamps, file paths).
 
@@ -37,7 +37,7 @@
     }
     ```
 
-### Job
+## Job
 
 - It represents a **single batch process** that is to be executed by a `JobLauncher`. 
 
@@ -65,8 +65,19 @@
     </job>
     ```
 
+### Restartability
 
-### JobInstance
+- A job can be marked as restartable. This means that if a job fails, it can be restarted from the last failed step.
+
+- Ideally, all jobs should be able to start up where they left off, but there are scenarios where this is not possible. In this scenario, it is entirely up to the developer to ensure that a new `JobInstance` is created. However, Spring Batch does provide some help. If a `Job` should never be restarted but should always be run as part of a new `JobInstance`, you can set the restartable property to `false`.
+
+- If a job is restartable, the job repository stores the state of the job execution. When the job is restarted, the job repository retrieves the state from the database and resumes the job from where it left off.
+
+- If a job is not restartable, the job repository does not store the state of the job execution. When the job is restarted, the job repository starts the job from the beginning.
+
+- Restarting a Job that is not restartable causes a `JobRestartException` to be thrown. 
+
+## JobInstance
 
 - It is a **logical run** of a job.
 
@@ -79,7 +90,7 @@
 - For same job parameters each job instance will be same but for each execution of the same job instance , job execution will be different.
 
 
-### JobExecution
+## JobExecution
 
 - A `JobExecution` refers to the technical concept of a **single attempt to run a Job.**
 
@@ -116,7 +127,7 @@
     - **executionContext**:	The 'property bag' containing any user data that needs to be persisted between executions.
     - **failureExceptions**: The list of exceptions encountered during the execution of a Job. These can be useful if more than one exception is encountered during the failure of a Job.
 
-### JobParameters
+## JobParameters
 
 - **"How is one JobInstance distinguished from another?"** The answer is: JobParameters
 
@@ -126,7 +137,7 @@
 
     ![JobParameters](./imgs/job-stereotypes-parameters.png)
 
-### Step
+## Step
 
 - A `Step` is a **single action** within a job.
 
@@ -152,7 +163,7 @@
         - Chunks are used for handling large datasets by breaking them into smaller, more manageable pieces. In chunk-oriented processing, data is read, processed, and written in chunks. 
         - Imagine you have a list of 1000 orders to process. With Chunk Processing, you can specify that you want to process 100 orders at a time. Spring Batch will read the first 100 orders, process them, and then move on to the next 100 until all orders are processed. This way, you’re not overwhelmed by the sheer volume of data, and your system operates efficiently.
 
-### StepExecution
+## StepExecution
 
 - A `StepExecution` represents a **single attempt** to execute a Step. A new `StepExecution` is created each time a Step is run, similar to `JobExecution`. However, if a step fails to execute because the step before it fails, no execution is persisted for it. A `StepExecution` is created only when its Step is actually started.
 
@@ -160,7 +171,7 @@
 
 - `StepExecution` may finish in success or failure status and so it has a `BatchStatus` and `ExitStatus` like a `JobExecution`.
 
-### ExecutionContext
+## ExecutionContext
 
 - An `ExecutionContext` represents a collection of key/value pairs that are persisted and controlled by the framework in order to allow developers a place to store persistent state that is scoped to a `StepExecution` object or a `JobExecution` object.
 
@@ -175,7 +186,8 @@
         - It's stored in `BATCH_STEP_EXECUTION_TABLE` of a Spring Batch Application.
         - Each step execution contains an `ExecutionContext`, which contains any data a developer needs to have persisted across batch runs, such as statistics or state information needed to restart.
         - For example, in the Step's ExecutionContext, the state of a step (how many records have been read, etc) is typically stored so that on restart the reader and writer can be reset to the correct position.
-### JobRepository
+
+## JobRepository
 
 - `JobRepository` is the mechanism in Spring Batch that makes all this persistence possible. It is the keeper of all the knowledge and metadata for each job (including component parts such as `JobInstances`, `JobExecution`, and `StepExecution`)
 
@@ -214,6 +226,49 @@ In the preceding example, the `reportCurrentTime` method is scheduled to run eve
 ### Using a Job Scheduling Tool
 
 - You can use a job scheduling tool like UC4, Quartz, Control-M, or Tivoli to schedule your batch jobs.
+
+---------------------------------------------------
+
+## LISTENERS
+
+- At some point of batch processing you may need to take control of the batch processing and introduce our own logic . Listeners allows logic to be interjected before or after key events. That allows us to introduce complex logic for complex use cases.
+
+### Available Listeners
+
+- JobExecutionListener
+- StepExecutionListener
+- ChunkListener
+- SkipListener
+- ItemReadListener
+- ItemWriteListener
+- ItemProcessListener
+- RetryListener
+
+Using these listeners we can typically implement logic before or after the above batch components execute.
+
+![Listeners](./imgs/listeners.webp)
+
+## JobExecutionListener
+
+- A `JobExecutionListener` is an interface that provides callback methods that are called before and after a job is executed.
+    ```java
+    public interface JobExecutionListener {
+        void beforeJob(JobExecution jobExecution);
+        void afterJob(JobExecution jobExecution);
+    }
+    ```
+- You can use this interface to perform tasks such as logging, sending notifications, or cleaning up resources before or after a job is executed.
+
+- Note that the `afterJob` method is called regardless of the success or failure of the Job.
+
+---------------------------------------------------
+
+<!-- ## Flat Files
+
+- One of the most common mechanisms for interchanging bulk data has always been the flat file. 
+- In general, all flat files fall into two types: 
+    - **delimited**: where fields are separated by a delimiter, such as a comma.
+    - **fixed length**: where fields are a set length. For example, the first 10 characters are the name, the next 5 are the age, etc. -->
 
 ---------------------------------------------------
 
