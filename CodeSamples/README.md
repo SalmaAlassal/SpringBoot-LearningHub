@@ -68,3 +68,7 @@ This example demonstrates how to write unit tests for a Spring Boot application 
 ## Example 13 : [SpringBatchDemo](SpringBatchDemo)
 
 This example demonstrates how to use Spring Batch. It showcases the creation of a simple batch job with 2 steps and listeners.
+
+## Example 14 : [SpringBatchDemoWithCSV](SpringBatchDemoWithCSV)
+
+This example demonstrates how to use Spring Batch to read data from a CSV file and write it to a database (H2 in-memory database).
