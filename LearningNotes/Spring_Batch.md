@@ -263,90 +263,23 @@ Using these listeners we can typically implement logic before or after the above
 
 ---------------------------------------------------
 
-<!-- ## Flat Files
+## Spring Batch Meta-Data Schema
 
-- One of the most common mechanisms for interchanging bulk data has always been the flat file. 
-- In general, all flat files fall into two types: 
-    - **delimited**: where fields are separated by a delimiter, such as a comma.
-    - **fixed length**: where fields are a set length. For example, the first 10 characters are the name, the next 5 are the age, etc. -->
+- Spring Batch uses metadata tables to track metadata about the jobs, steps and all of their components.
 
----------------------------------------------------
+- The `JobRepository` is responsible for saving and storing each Java object into its correct table.
 
-## Annotations
-
-### `@EnableBatchProcessing`
-
-- This annotation is used to enable Spring Batch features and provide a base configuration for setting up batch jobs in the application.
-
-- It automatically creates bean for a `JobRepository`, `JobLauncher`, `JobRegistry`, `PlatformTransactionManager`, `JobBuilderFactory` and `StepBuilderFactory`.
-
-```java
-@EnableBatchProcessing
-@SpringBootApplication
-public class SpringBatchApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(SpringBatchApplication.class, args);
-    }
-}
-```
----------------------------------------------------
-<!-- 
-## Spring Batch's chunk-based processing model example
-
-```java
-package com.demo.springbatchsampleapp.batch.config;
-
-
-import com.demo.springbatchsampleapp.batch.CustomItemProcessor;
-import com.demo.springbatchsampleapp.batch.CustomItemReader;
-import com.demo.springbatchsampleapp.batch.CustomItemWriter;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.PlatformTransactionManager;
-
-@Configuration
-public class BatchConfig {
-    @Bean
-    public CustomItemReader reader() {
-        return new CustomItemReader();
-    }
-
-    @Bean
-    public CustomItemProcessor processor() {
-        return new CustomItemProcessor();
-    }
-
-    @Bean
-    public CustomItemWriter writer() {
-        return new CustomItemWriter();
-    }
-
-    @Bean
-    public Step step1(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
-        return new StepBuilder("step1", jobRepository).<String, String>chunk(0, platformTransactionManager)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
-                .build();
-    }
-
-    @Bean
-    public Job demoJob(JobRepository jobRepository) {
-        return new JobBuilder("demoJob", jobRepository)
-                .start(step1(jobRepository, null))
-                .build();
-
-    }
-}
-``` -->
+![Spring Batch Meta-Data Schema](./imgs/spring-batch-metadata-schema.png)
 
 ---------------------------------------------------
+---------------------------------------------------
 
-<!-- ## References
+## Flat Files
 
-- [The Domain Language of Batch](https://docs.spring.io/spring-batch/docs/2.2.x/reference/html/domain.html#:~:text=3.1.,-1.&text=A%20JobInstance%20refers%20to%20the,Job%20must%20be%20tracked%20separately.) -->
+- A flat file is essentially a plain text file that does not contain any structured relationships with other files or databases. This type of file can be as simple as a text document, a CSV file, an Excel spreadsheet, or even a binary file.
+
+- A flat file database consists of just one table, with the size depending on the amount of data it needs to hold. 
+
+- Spring Batch provides a `FlatFileItemReader` that we can use to read data from flat files.
+
+---------------------------------------------------
