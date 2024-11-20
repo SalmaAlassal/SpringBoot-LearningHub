@@ -72,3 +72,7 @@ This example demonstrates how to use Spring Batch. It showcases the creation of 
 ## Example 14 : [SpringBatchDemoWithCSV](SpringBatchDemoWithCSV)
 
 This example demonstrates how to use Spring Batch to read data from a CSV file and write it to a database (H2 in-memory database).
+
+## Example 15 : [TransactionsBatchProcessor](TransactionsBatchProcessor)
+
+This example demonstrates how to use Spring Batch to read data(transactions data) from a CSV file and process it to successfull and failed transactions and write each to a different table in the database (H2 in-memory database).
