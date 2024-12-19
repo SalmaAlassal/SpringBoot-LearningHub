@@ -1,4 +1,4 @@
-# Spring Data JPA
+# JPA & Spring Data JPA
 
 ## Data Persistence
 
@@ -29,17 +29,20 @@
 
 - JPA stands for **Java Persistence API**. It is a Java specification for accessing, persisting, and managing data between Java objects / classes and a relational database.
 
-- **JPA manages ORM in a Java application.** JPA defines a set of classes and interfaces without defining its implementation. Hence, an additional ORM tool is required to implement these interfaces. So, ORM tools like `Hibernate`, `TopLink` and `iBatis` implements JPA specifications for data persistence.
+- **JPA manages ORM in a Java application.** JPA defines a set of classes and interfaces without defining its implementation. Hence, an additional ORM tool is required to implement these interfaces. So, ORM tools like `Hibernate`, `TopLink`, `OpenJPA` `EclipseLink` and `iBatis` implements JPA specifications for data persistence.
 
 - **JPA is just a specification,** JPA is not a framework. It defines a concept that can be implemented by any framework. It requires an implementation.
 
-- As an object-oriented query language, it uses **JPQL (Java Persistent Query Language)** to execute database operations.
+- As an object-oriented query language, it uses **JPQL (Java Persistent Query Language)** to execute database operations. The role of JPA is to transform JPQL into SQL.
 
 - A point to be noted here is that **JPA still uses JDBC under the hood** which helps in dealing with relational database models.
 
 - `javax.persistence` package contains the JPA classes and interfaces. In 2019, JPA renamed to **Jakarta Persistence** `jakarta.persistence`.
 
 ![JPA](./imgs/jpa.png)
+
+> ORM vendors like Hibernate, TopLink..
+
 
 ## JPA vs Hibernate
 
@@ -57,6 +60,181 @@
 
 - Hibernate is described in `org.hibernate package`.
     > It's recomended to use the standard JPA annotations from `javax.persistence` package. This way, you could theoretically run your code on other JPA implementations. Only when you need Hibernate-specific functionality should you use the Hibernate annotations.
+
+## Spring Data JPA
+
+- Spring Data JPA **adds a layer on the top of JPA.**
+
+- Spring Data JPA abstracts JPA, which means that Spring Data JPA's Repository implementation uses JPA.
+
+- Spring Data JPA always requires a JPA implementation such as Hibernate, EclipseLink, etc.
+
+- It likes a jpa but it add some extra functionality, Without jpa we can not implement the spring data jpa.
+
+- If you want to use JPA, you need to inject `EntityManager` and use it. But if you want to use Spring Data JPA, you need to inject `Repository` and use it. 
+
+![Spring Data JPA](./imgs/spring_data_jpa.png)
+
+- **Features:**
+    - **Repository Pattern**: Spring Data JPA provides a repository abstraction that allows you to work with JPA entities without writing boilerplate code.
+    - **Query Methods**: You can define queries using method names in the repository interface. Spring Data JPA will automatically generate the required SQL queries based on the method names.
+    - **Pagination and Sorting**: Spring Data JPA provides built-in support for pagination and sorting of query results.
+
+- **Spring Data Repositories**:
+    - `CrudRepository`: It offers standard create, read, update, and delete It contains method like `findOne()`, `findAll()`, `save()`, `delete()`.
+    - `PagingAndSortingRepository`: It extends `CrudRepository` and adds additional methods to retrieve entities using pagination and sorting.
+    - `JpaRepository`: It extends both `CrudRepository` and `PagingAndSortingRepository` and provides additional JPA-specific methods like `flush()`.
+
+### JPA Example vs Spring Data JPA Example
+
+- **JPA Example**:
+    ```java
+    @Repository
+    public class EmployeeDAO {
+        @PersistenceContext
+        private EntityManager entityManager;
+        public void saveEmployee(Employee employee) {
+            entityManager.persist(employee);
+        }
+
+        public List<Employee> getAllEmployees() {
+            Query query = entityManager.createQuery("SELECT e FROM Employee e");
+            return query.getResultList();
+        }
+    }
+    ```
+
+- **Spring Data JPA Example**:
+    ```java
+    public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    }
+    ```
+    ```java
+    @Service
+    public class EmployeeService {
+        @Autowired
+        private EmployeeRepository employeeRepository;
+        public void saveEmployee(Employee employee) {
+            employeeRepository.save(employee);
+        }
+
+        public List<Employee> getAllEmployees() {
+            return employeeRepository.findAll();
+        }
+    }
+    ```
+
+--------------------------------------------
+
+## JPA Architecture
+
+![JPA Architecture](./imgs/jpa_architecture.webp)
+
+The main components of JPA include:
+
+- **Entity Manager Factory**: 
+    - It is a factory class of `EntityManager` instances. 
+    - It is used to create and manage multiple `EntityManager` instances. 
+    - It is thread-safe and expensive to create, so **it should be created once per application** and reused.
+    - It's created using the `Persistence` class.
+
+- **Entity Manager**: 
+    - It is created using the `EntityManagerFactory` instance.
+    - It manages the lifecycle of entity instances, performs CRUD operations, and executes queries. 
+    - It manages the lifecycle of entities, such as persisting, finding, merging, and removing them.    
+    - It is not thread-safe and should be used per transaction or per request.
+
+    ```java
+    import javax.persistence.EntityManager;
+    import javax.persistence.EntityManagerFactory;
+    import javax.persistence.Persistence;
+
+    public class Main {
+        public static void main(String[] args) {
+            
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyPersistenceUnit");
+
+            EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+            entityManager.getTransaction().begin();
+
+            // Perform CRUD operations using entityManager
+            Manager manager = new Manager();
+            manager.setName("John Doe");
+            entityManager.persist(manager);
+
+            Employee employee = new Employee();
+            employee.setName("Alice");
+            entityManager.persist(employee);
+
+            // Commit the transactions made (persist, update, delete)
+            entityManager.getTransaction().commit();
+
+            entityManager.close();
+            entityManagerFactory.close();
+        }
+    }
+    ```
+
+- **Entity**: 
+    - It is a class that represents a table in the database. 
+    - The Entity class maps to the required table schema present in the linked database. 
+    - It is annotated with `@Entity` annotation.
+
+- **Persistence Unit**: 
+    - It is a logical grouping of related entity classes and their configurations.
+    - It defines all entity classes managed by an `EntityManager`. 
+    - Specifies database connection properties, transaction management type, and any additional settings.
+    - It is defined in the `persistence.xml` file.
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <persistence version="2.1"
+        xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+        <persistence-unit name="TestPersistence" transaction-type="RESOURCE_LOCAL">
+            <class><!-- Entity Manager Class Name --></class>
+            <properties>
+                <property name="javax.persistence.jdbc.url" value="Database Url" />
+                <property name="javax.persistence.jdbc.user" value="Database Username" />
+                <property name="javax.persistence.jdbc.password" value="Database Password" />
+                <property name="javax.persistence.jdbc.driver" value="Database Driver Name" />
+            </properties>
+        </persistence-unit>
+    </persistence>
+    ```
+
+    **Example**:
+    ```xml
+    <persistence-unit name="myPersistenceUnit">
+        <class>com.example.demo.entity.Manager</class>
+        <class>com.example.demo.entity.Employee</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+        </properties>    
+    </persistence-unit>
+    ```
+
+
+
+- **Entity Transaction**:
+    - The `EntityTransaction` interface manages transaction boundaries. 
+    - It allows you to begin, commit, and rollback transactions to ensure data consistency and integrity.
+    - A transaction is a set of operations that either fail or succeed as a unit. 
+    - A database transaction consists of a set of SQL DML (Data Manipulation Language) operations that are committed or rolled back as a single unit. 
+    - It lives for a short period of time. It dies after the transaction is either committed or rolled back.
+
+    ```java
+    entityManager.getTransaction().begin();
+    // Perform multiple operations
+    entityManager.getTransaction().commit();
+    ```
+
+- **JPQL**: 
+    - It is a query language that is used to execute queries on entities. It is similar to SQL but operates on entities rather than tables.
+
 
 --------------------------------------------
 
@@ -402,4 +580,19 @@ private Set<Order> orders;
 
 ##### Avoiding the N+1 Select Problem
 
-TODO
+- You can use **JOIN FETCH** in JPQL queries to fetch the related entities in a single query. This can help avoid the n+1 select problem by fetching all the related entities in one go.
+
+- **Example**:
+    ```java
+    public class Order{
+        ...
+        ...
+        @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+        private List<Item> items;
+    }
+
+    // JPQL query with JOIN FETCH with lazy-loaded associations
+    @Query("SELECT o FROM Order o JOIN FETCH o.items WHERE o.id = :orderId")
+    Order findOrderWithItems(@Param("orderId") Long orderId);
+    ```
+--------------------------------------------
