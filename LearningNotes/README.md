@@ -29,6 +29,7 @@ Here, you will find a detailed notes covering essential Spring Boot concepts and
 
 - [JPA Part 1](JPA1.md)
 - [JPA Part 2](JPA2.md)
+- [JPA Repositories Methods](./Spring_Data_JPA_Repositories_Methods.md)
 
 --------
 
