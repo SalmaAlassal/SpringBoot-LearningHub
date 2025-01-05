@@ -1,243 +1,3 @@
-# JPA & Spring Data JPA
-
-## Data Persistence
-
-- Data persistence refers to **the capability of an application to save data so that it can be retrieved and used later,** even after the application has closed or the system has been restarted. 
-
-- A simple way to achieve data persistence for a Java application is through **JDBC.** This does the job of achieving connectivity between a Java application and its storage system, persist data and retrieve it exactly as present in the schema of the database table. Up until JDBC, our focus was solely on achieving the connection between a Java application and its database to automate CRUD operations. But building an enterprise application with JDBC alone for data persistence is taxing and inefficient. This is because **JDBC requires additional coding to map the application’s object-oriented data representation to a relational database model and its schema.** In other words, it requires us to manually translate the transient java objects into relational database schema and back again. This, for an enterprise application, becomes extensively taxing, especially if it implements MVC pattern. Hence we can safely conclude that JDBC lacks in supporting object-to-relational database mapping termed as Object Relational Mapping (ORM).
-
-## Transient vs Persistent Object
-
-- **Transient Object:** An object is said to be transient if it is just created and is not saved in the database.
-- **Persistent Object:** An object is said to be persistent if it is saved in the database.
-
-- For example, when you get an entity from a repository, that entity is persistent. When you create a new entity, it is transient until persisted.
-
-## JDBC
-
-- **JDBC (Java Database Connectivity)** provides a set of Java APIs to access the relational databases from the Java program. Java APIs enable programs to execute SQL statements and interact with any SQL database.
-
-## ORM
-
-- ORM stands for **Object-Relational Mapping**. 
-
-- ORM is a programming technique that maps objects to relational databases. ORM allows developers to work with objects in their code and automatically handles the mapping to and from the database. 
-
-![ORM](./imgs/orm.png)
-
-## JPA
-
-- JPA stands for **Java Persistence API**. It is a Java specification for accessing, persisting, and managing data between Java objects / classes and a relational database.
-
-- **JPA manages ORM in a Java application.** JPA defines a set of classes and interfaces without defining its implementation. Hence, an additional ORM tool is required to implement these interfaces. So, ORM tools like `Hibernate`, `TopLink`, `OpenJPA` `EclipseLink` and `iBatis` implements JPA specifications for data persistence.
-
-- **JPA is just a specification,** JPA is not a framework. It defines a concept that can be implemented by any framework. It requires an implementation.
-
-- As an object-oriented query language, it uses **JPQL (Java Persistent Query Language)** to execute database operations. The role of JPA is to transform JPQL into SQL.
-
-- A point to be noted here is that **JPA still uses JDBC under the hood** which helps in dealing with relational database models.
-
-- `javax.persistence` package contains the JPA classes and interfaces. In 2019, JPA renamed to **Jakarta Persistence** `jakarta.persistence`.
-
-![JPA](./imgs/jpa.png)
-
-> ORM vendors like Hibernate, TopLink..
-
-
-## JPA vs Hibernate
-
-- **JPA** is a java specification that is used to access, manage, and persist data between Java object and relational database. **It is a standard approach for ORM.**
-
-- **JPA** is a set of rules and guidelines that must be followed. **Hibernate** is an ORM tool that implements these rules.
-
-## Hibernate
-
-- Hibernate is a framework which provides some abstraction layer, meaning that the programmer does not have to worry about the implementations, Hibernate does the implementations for you internally like Establishing a connection with the database, writing query to perform CRUD operations etc.
-
-- The main feature of Hibernate is to map the Java classes to database tables.
-
-- As an object-oriented query language, it uses **Hibernate Query Language (HQL)** to execute database operations.
-
-- Hibernate is described in `org.hibernate package`.
-    > It's recomended to use the standard JPA annotations from `javax.persistence` package. This way, you could theoretically run your code on other JPA implementations. Only when you need Hibernate-specific functionality should you use the Hibernate annotations.
-
-## Spring Data JPA
-
-- Spring Data JPA **adds a layer on the top of JPA.**
-
-- Spring Data JPA abstracts JPA, which means that Spring Data JPA's Repository implementation uses JPA.
-
-- Spring Data JPA always requires a JPA implementation such as Hibernate, EclipseLink, etc.
-
-- It likes a jpa but it add some extra functionality, Without jpa we can not implement the spring data jpa.
-
-- If you want to use JPA, you need to inject `EntityManager` and use it. But if you want to use Spring Data JPA, you need to inject `Repository` and use it. 
-
-![Spring Data JPA](./imgs/spring_data_jpa.png)
-
-- **Features:**
-    - **Repository Pattern**: Spring Data JPA provides a repository abstraction that allows you to work with JPA entities without writing boilerplate code.
-    - **Query Methods**: You can define queries using method names in the repository interface. Spring Data JPA will automatically generate the required SQL queries based on the method names.
-    - **Pagination and Sorting**: Spring Data JPA provides built-in support for pagination and sorting of query results.
-
-- **Spring Data Repositories**:
-    - `CrudRepository`: It offers standard create, read, update, and delete It contains method like `findOne()`, `findAll()`, `save()`, `delete()`.
-    - `PagingAndSortingRepository`: It extends `CrudRepository` and adds additional methods to retrieve entities using pagination and sorting.
-    - `JpaRepository`: It extends both `CrudRepository` and `PagingAndSortingRepository` and provides additional JPA-specific methods like `flush()`.
-
-### JPA Example vs Spring Data JPA Example
-
-- **JPA Example**:
-    ```java
-    @Repository
-    public class EmployeeDAO {
-        @PersistenceContext
-        private EntityManager entityManager;
-        public void saveEmployee(Employee employee) {
-            entityManager.persist(employee);
-        }
-
-        public List<Employee> getAllEmployees() {
-            Query query = entityManager.createQuery("SELECT e FROM Employee e");
-            return query.getResultList();
-        }
-    }
-    ```
-
-- **Spring Data JPA Example**:
-    ```java
-    public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    }
-    ```
-    ```java
-    @Service
-    public class EmployeeService {
-        @Autowired
-        private EmployeeRepository employeeRepository;
-        public void saveEmployee(Employee employee) {
-            employeeRepository.save(employee);
-        }
-
-        public List<Employee> getAllEmployees() {
-            return employeeRepository.findAll();
-        }
-    }
-    ```
-
---------------------------------------------
-
-## JPA Architecture
-
-![JPA Architecture](./imgs/jpa_architecture.webp)
-
-The main components of JPA include:
-
-- **Entity Manager Factory**: 
-    - It is a factory class of `EntityManager` instances. 
-    - It is used to create and manage multiple `EntityManager` instances. 
-    - It is thread-safe and expensive to create, so **it should be created once per application** and reused.
-    - It's created using the `Persistence` class.
-
-- **Entity Manager**: 
-    - It is created using the `EntityManagerFactory` instance.
-    - It manages the lifecycle of entity instances, performs CRUD operations, and executes queries. 
-    - It manages the lifecycle of entities, such as persisting, finding, merging, and removing them.    
-    - It is not thread-safe and should be used per transaction or per request.
-
-    ```java
-    import javax.persistence.EntityManager;
-    import javax.persistence.EntityManagerFactory;
-    import javax.persistence.Persistence;
-
-    public class Main {
-        public static void main(String[] args) {
-            
-            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyPersistenceUnit");
-
-            EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-            entityManager.getTransaction().begin();
-
-            // Perform CRUD operations using entityManager
-            Manager manager = new Manager();
-            manager.setName("John Doe");
-            entityManager.persist(manager);
-
-            Employee employee = new Employee();
-            employee.setName("Alice");
-            entityManager.persist(employee);
-
-            // Commit the transactions made (persist, update, delete)
-            entityManager.getTransaction().commit();
-
-            entityManager.close();
-            entityManagerFactory.close();
-        }
-    }
-    ```
-
-- **Entity**: 
-    - It is a class that represents a table in the database. 
-    - The Entity class maps to the required table schema present in the linked database. 
-    - It is annotated with `@Entity` annotation.
-
-- **Persistence Unit**: 
-    - It is a logical grouping of related entity classes and their configurations.
-    - It defines all entity classes managed by an `EntityManager`. 
-    - Specifies database connection properties, transaction management type, and any additional settings.
-    - It is defined in the `persistence.xml` file.
-    ```xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <persistence version="2.1"
-        xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-        <persistence-unit name="TestPersistence" transaction-type="RESOURCE_LOCAL">
-            <class><!-- Entity Manager Class Name --></class>
-            <properties>
-                <property name="javax.persistence.jdbc.url" value="Database Url" />
-                <property name="javax.persistence.jdbc.user" value="Database Username" />
-                <property name="javax.persistence.jdbc.password" value="Database Password" />
-                <property name="javax.persistence.jdbc.driver" value="Database Driver Name" />
-            </properties>
-        </persistence-unit>
-    </persistence>
-    ```
-
-    **Example**:
-    ```xml
-    <persistence-unit name="myPersistenceUnit">
-        <class>com.example.demo.entity.Manager</class>
-        <class>com.example.demo.entity.Employee</class>
-        <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="root"/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-        </properties>    
-    </persistence-unit>
-    ```
-
-
-
-- **Entity Transaction**:
-    - The `EntityTransaction` interface manages transaction boundaries. 
-    - It allows you to begin, commit, and rollback transactions to ensure data consistency and integrity.
-    - A transaction is a set of operations that either fail or succeed as a unit. 
-    - A database transaction consists of a set of SQL DML (Data Manipulation Language) operations that are committed or rolled back as a single unit. 
-    - It lives for a short period of time. It dies after the transaction is either committed or rolled back.
-
-    ```java
-    entityManager.getTransaction().begin();
-    // Perform multiple operations
-    entityManager.getTransaction().commit();
-    ```
-
-- **JPQL**: 
-    - It is a query language that is used to execute queries on entities. It is similar to SQL but operates on entities rather than tables.
-
-
---------------------------------------------
-
 ## JPA Relationships
 
 - Relationships may be **bidirectional** or **unidirectional**.
@@ -289,6 +49,7 @@ The main components of JPA include:
         }
         ```
 
+    > The main difference is that bidirectional relationship provides navigational access in both directions, so that you can access the other side without explicit queries. Also it allows you to apply cascading options to both directions.
 
 - In JPA, the **“owning side”** of a relationship refers to the entity that takes charge of managing and updating the **join table**. On the flip side, the **“inverse side”** (denoted by the `mappedBy` attribute) mirrors the relationship but doesn’t interfere with the **join table** management.
    - Consider a relationship between two entities: `Author` and `Book`. If `Author` is the owning side, it implies that `Author` is accountable for updating the relationship between `Author` and `Book` in the database.
@@ -445,27 +206,6 @@ The main components of JPA include:
 
 --------------------------------------------
 
-## Different Query Types in Spring Data Repositories
-
-You can define queries in Spring Data JPA repositories using the following methods:
-
-- **JPQL Queries**: It allows you to write queries using entity classes and fields. 
-    ```java
-    @Query("SELECT s FROM Student s JOIN s.courses c WHERE c.id = :courseId")
-    List<Student> findStudentsByCourseId(@Param("courseId") Long courseId);
-    ```
-- **Native Queries**: It permits the execution of SQL queries directly.
-    ```java
-    @Query(value = "SELECT * FROM student_course WHERE course_id = :courseId", nativeQuery = true)
-    List<Map<String, Object>> findStudentCourseMappings(@Param("courseId") Long courseId);
-    ```
-- **Derived Query Methods**: It allows you to create queries based on method names. 
-    ```java
-    List<Student> findByCoursesId(Long courseId);
-    ```
-
---------------------------------------------
-
 ## Cascading
 
 - **Cascading** means that when an operation is performed on one entity, the same operation is also performed on related entities. For example, if a parent entity is deleted, the child entity should also be deleted.
@@ -535,6 +275,10 @@ private Set<Order> orders;
     private List<Employee> employees;
     ```
 
+- If you invoke `setOrders(null)`:
+    - **For orphan removal:** The related Order entities **will be removed** in db automatically.
+    - **For remove cascade:** The related Order entities **will NOT be removed** in db automatically.
+
 --------------------------------------------
 
 ## Fetch Types
@@ -595,4 +339,49 @@ private Set<Order> orders;
     @Query("SELECT o FROM Order o JOIN FETCH o.items WHERE o.id = :orderId")
     Order findOrderWithItems(@Param("orderId") Long orderId);
     ```
+--------------------------------------------
+
+## Primary Key Generation Strategies
+
+- `@GeneratedValue`:  This annotation is used to mark a field as a generated value. It tells Spring Boot that this field should be generated by the database when a new record is inserted into the table.
+
+- The JPA specification supports 4 different primary key generation strategies which generate the primary key values programmatically or use database features to generate them.
+
+### `strategy = GenerationType.IDENTITY`
+
+- It is a strategy that relies on the database to generate the primary key value using the auto-increment column option. It requires the database to support auto-increment columns.
+
+### `strategy = GenerationType.SEQUENCE`
+
+- It is a strategy that uses a database sequence to generate primary key values. It requires the usage of database sequence objects, which varies depending on the database being used as not all databases support sequences (e.g., MySQL).
+    - Not all databases support sequences, so it’s essential to check database compatibility.
+        > Sequences are supported by databases like Oracle, PostgreSQL, and MSSQL, but not by MySQL.
+
+### `strategy = GenerationType.AUTO`
+
+- It is a strategy that lets the persistence provider (e.g., Hibernate) choose the generation strategy. It selects the strategy based on the database-specific dialect. It is the default generation type.
+
+
+## `@SequenceGenerator (name = "sequence_name", sequenceName = "sequence_name", allocationSize = 1)`
+
+- This annotation tells JPA to use a specific sequence in the database to generate unique values for a primary key.
+
+- `name` - The name of the sequence generator. It should be unique within the persistence unit. It is used to reference the sequence generator in the `@GeneratedValue` annotation.
+- `sequenceName` - The name of the database sequence object. It checks if the sequence exists in the database and uses it, if not, it creates a new sequence with the specified name.
+- `allocationSize` - The increment size for the sequence.
+
+```java
+@Id
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
+@SequenceGenerator(name = "user_seq_generator", sequenceName = "user_seq", allocationSize = 1)
+private Long id;
+```
+
+Ensure the database has a sequence named `user_seq` created before using the `@SequenceGenerator` annotation.
+```sql
+CREATE SEQUENCE user_seq START WITH 1 INCREMENT BY 1;
+```
+
+> If no `@SequenceGenerator` annotation is provided, JPA will use the default sequence generator. The default sequence generator is specific to the database dialect and may not be suitable for all use cases.
+
 --------------------------------------------

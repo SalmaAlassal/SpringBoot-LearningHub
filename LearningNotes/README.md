@@ -2,34 +2,41 @@
 
 Here, you will find a detailed notes covering essential Spring Boot concepts and topics that I've accumulated during my learning journey. 
 
-## Topics Covered
 
-- [Spring Boot Annotations](SpringBoot_Annotations.md)
-- [Spring Boot Dependencies](SpringBoot_Dependencies.md)
-- [Spring Boot Properties](SpringBoot_Properties.md)
+## Basics
 
-- [Spring Boot Beans](SpringBoot_Beans.md)
-- [Spring Boot General Notes](SpringBoot_GeneralNotes.md)
-    - [Thymeleaf](SpringBoot_GeneralNotes.md#thymeleaf)
-    - [H2 Database](SpringBoot_GeneralNotes.md#h2-database)
-    - [Spring Data JPA](SpringBoot_GeneralNotes.md#spring-data-jpa)
-    - [JpaRepository vs CrudRepository](SpringBoot_GeneralNotes.md#jparepository-vs-crudrepository)
+- [HTTP Basics](./HTTP-Basics.md)
+- [APIs](APIs.md)
+- [Rest APIs](REST-API.md)
+- [Java Naming Conventions](Java_Naming_Conventions.md)
 
+## Spring Boot
 
-- [HTTP-Basics](HTTP-Basics.md)
+- [Introduction](./SpringBoot_Introduction.md)
+- [Servlets](./Servlets.md)
+- [IOC Container](./SpringBoot_IOC_Container.md)
+- [Beans](./SpringBoot_Beans.md)
 
-## Topics to be Covered
+--------
 
-- [Spring Boot Overview](SpringBootOverview.md)
-- [Spring Boot Architecture](SpringBootArchitecture.md)
-- [Spring Boot Starter](SpringBootStarter.md)
-- [Spring Boot Auto-Configuration](SpringBootAutoConfiguration.md)
-- [Spring Boot CLI](SpringBootCLI.md)
-- [Spring Boot Actuator](SpringBootActuator.md)
-- [Spring Boot Testing](SpringBootTesting.md)
-- [Spring Boot Security](SpringBootSecurity.md)
-- [Spring Boot Data](SpringBootData.md)
-- [Spring Boot Web](SpringBootWeb.md)
-- [Spring Boot DevTools](SpringBootDevTools.md)
-- [Spring Boot Logging](SpringBootLogging.md)
-- [Spring Boot Deployment](SpringBootDeployment.md)
+- [Dependencies](./SpringBoot_Dependencies.md)
+- [Starters](./SpringBoot_Starter.md)
+- [Properties](./SpringBoot_Properties.md)
+- [Profiles](./SpringBoot_Profiles.md)
+- [Runners](./SpringBoot_Runners.md)
+
+--------
+
+- [JPA Part 1](JPA1.md)
+- [JPA Part 2](JPA2.md)
+
+--------
+
+- [Global Exception Handling](./Global_Exception_Handler.md)
+- [Security](./SpringBoot_Security.md)
+- [Unit Testing](./Unit_Testing.md)
+
+## Other Topics
+
+- [Maven](./Maven.md)
+- [Flyway](./Flyway.md)
