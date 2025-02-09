@@ -42,7 +42,34 @@ You can define queries in Spring Data JPA repositories using the following metho
 
 ----------------------------------------------------------------
 
-## Sorting & Pagination
+## `@Repository` Annotation vs Extending `JpaRepository`
+
+- **When to use `@Repository` Annotation**:
+    - You want to manually define your custom repository methods and queries.
+
+- **When to extend `JpaRepository`**:
+    - You want to use the built-in CRUD methods provided by Spring Data JPA.
+    - You want to use the derived query methods provided by Spring Data JPA.
+
+----------------------------------------------------------------
+
+## Multi-line Queries
+
+- **Multi-line Queries**: You can write multi-line queries in Spring Data JPA repositories using the `@Query` annotation and the `"""` syntax.
+    ```java
+    @Query("""
+        SELECT s FROM Student s
+        JOIN s.courses c
+        WHERE c.id = :courseId
+    """)
+    List<Student> findStudentsByCourseId(@Param("courseId") Long courseId);
+    ```
+    > The `"""` syntax allows you to write multi-line queries without using the `+` operator to concatenate strings.
+
+
+- It eliminates the overhead associated with string concatenation using the `+` operator, resulting in a query that is both more readable and easier to maintain.
+
+----------------------------------------------------------------
 
 ## Sorting
 
@@ -73,6 +100,8 @@ List<Student> studentsSortedByFirstNameAndLastName = studentRepository.findByCou
         - Example: `Sort.by(List.of(Order.asc("firstName"), Order.desc("lastName")))`
     - `Sort.unsorted()`: It returns an unsorted `Sort` object.
         - Example: `List<Student> students = studentRepository.findByCoursesId(courseId, Sort.unsorted());`
+
+----------------------------------------------------------------
 
 ## Pagination
 
@@ -138,3 +167,4 @@ List<Student> studentsSortedByFirstNameAndLastName = studentRepository.findByCou
     boolean isFirst = studentsPage.isFirst();
     boolean isLast = studentsPage.isLast();
     ```
+----------------------------------------------------------------
