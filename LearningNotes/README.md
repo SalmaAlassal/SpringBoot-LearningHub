@@ -35,8 +35,12 @@ Here, you will find a detailed notes covering essential Spring Boot concepts and
 
 --------
 
-- [Global Exception Handling](./Global_Exception_Handler.md)
 - [Security](./SpringBoot_Security.md)
+- [JWT](./JWT.md)
+
+--------
+
+- [Global Exception Handling](./Global_Exception_Handler.md)
 - [Unit Testing](./Unit_Testing.md)
 
 ## Other Topics
